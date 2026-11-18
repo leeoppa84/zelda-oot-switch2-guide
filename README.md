@@ -37,14 +37,13 @@ python -m http.server 8765 --bind 127.0.0.1 --directory dist
 
 ## 운영 상태
 
-- 저장소: https://github.com/leeoppa84/zelda-oot-switch2-guide (비공개)
+- 저장소: https://github.com/leeoppa84/zelda-oot-switch2-guide (2026-11-18 사용자 결정으로 공개 전환. 만자천홍 공략집과 같은 방식)
 - 기준 브랜치: `main`, 원격 이름: `origin`
-- GitHub Pages: 미설정·미배포. 저장소 푸시는 사이트 배포를 뜻하지 않음
+- GitHub Pages: `.github/workflows/pages.yml`이 main 푸시마다 `build.py`·`verify.py`를 실행하고 `dist/`만 배포함. 공개 주소 https://leeoppa84.github.io/zelda-oot-switch2-guide/
+- 제작자 표기: `leeoppa84` · 네이버 블로그 https://blog.naver.com/leeoppaoppa (사이트 하단)
+- 공개 범위: 보기만 가능. 저장소 수정은 소유자만 가능. 공개 저장소라 원본 ZIP 내려받기는 GitHub 기본 기능으로 막을 수 없음
 - 목표 운영: GitHub 저장소 + GitHub Pages + 네이버 소개 글. 다른 호스팅으로 대체하지 않음
-- 네이버 대표 글·관련 글 주소: 아직 없음. 계정·게시 대상 미확정. 원고 준비만 수행함
-- 제작자 표기는 현재 `게임 공략 노트`. 실제 필명·블로그 URL은 미설정이므로 다른 프로젝트의 주소를 복사하지 않음
-- 공개 전 확정할 항목: 제작자 필명·블로그 주소·게시 허용 범위
-- 배포 허용 후: 저장소 하위 경로에서도 동작하는 `dist/`만 게시, 해당 커밋의 Pages 배포 결과와 공개 화면 확인, 블로그 원고에 실제 URL 반영
+- 네이버 소개 글: 블로그 키우기 `posts/2026-11-18-젤다의-전설-시간의-오카리나-스위치2-공략`에서 작성 중. 발행 후 주소를 여기에 적음
 - 다운로드 버튼·오프라인 HTML·서비스 워커·수출/내보내기 기능 없음
 - 게임 스크린샷·타 공략 지도 재사용 없음. CSS 시계 장식은 게임 외형이나 실제 지도를 나타내지 않음
 
