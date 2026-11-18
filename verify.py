@@ -2,6 +2,7 @@
 from pathlib import Path
 from html.parser import HTMLParser
 import json
+from urllib.parse import urlsplit
 from src.content import CHAPTERS, SOURCES, META
 from src.collection import ENTRIES, NEW_SOURCES
 import xml.etree.ElementTree as ET
@@ -32,7 +33,7 @@ assert len(p.ids) == len(set(p.ids)), '중복 HTML ID'
 assert len(p.checks) == len(set(p.checks)), '중복 저장 키'
 for link in p.links:
     if link.startswith('#'): assert link[1:] in p.ids, f'없는 앵커: {link}'
-for asset in p.assets: assert (ROOT/'dist'/asset).is_file(), f'없는 에셋: {asset}'
+for asset in p.assets: assert (ROOT/'dist'/urlsplit(asset).path).is_file(), f'없는 에셋: {asset}'
 for ch in CHAPTERS:
     assert ch['steps'] and ch['checked'] == META['date']
     assert ch['edition'].startswith('Switch 2')

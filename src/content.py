@@ -1,5 +1,5 @@
 """Switch 2 한국어 공략 원본. ID는 진행 체크와 직접 링크에 사용하므로 유지한다."""
-META = dict(title='젤다의 전설 시간의 오카리나', platform='Nintendo Switch 2', version='0.2.0', date='2026-11-18', author='leeoppa84', blog_url='https://blog.naver.com/leeoppaoppa', public_url='https://leeoppa84.github.io/zelda-oot-switch2-guide/', repository='https://github.com/leeoppa84/zelda-oot-switch2-guide')
+META = dict(title='젤다의 전설 시간의 오카리나', platform='Nintendo Switch 2', version='0.2.1', date='2026-11-18', author='leeoppa84', blog_url='https://blog.naver.com/leeoppaoppa', public_url='https://leeoppa84.github.io/zelda-oot-switch2-guide/', repository='https://github.com/leeoppa84/zelda-oot-switch2-guide')
 SOURCES = {
  'official': ('한국닌텐도 · 게임 소개', 'https://www.nintendo.com/kr/games/switch2/aa9ja/index.html', '한국어 공식', '발매 판본·기본 개념'),
  'interview': ('한국닌텐도 · 개발자 인터뷰 3편', 'https://www.nintendo.com/kr/interview/aa9ja/03.html', '한국어 공식', '수동 점프·액션 재구축'),

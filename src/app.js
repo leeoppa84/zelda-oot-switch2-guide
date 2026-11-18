@@ -91,7 +91,7 @@
     });
     document.querySelector('#result-count').textContent=active==='guide'?`${count}개 장 표시`:`${count}개 항목 표시`;
     document.querySelector('#empty').hidden=count!==0 || active!=='guide';
-    document.querySelector('#clear-search').hidden=!q && !era.value;
+    document.querySelector('#clear-search').hidden=!q && !era.value && (region.hidden || !region.value);
     document.querySelectorAll('.catalog-panel').forEach(p=>{
       const cards=[...p.querySelectorAll('.reference-entry')];
       const visible=cards.filter(card=>!card.hidden);
