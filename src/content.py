@@ -1,5 +1,5 @@
 """Switch 2 한국어 공략 원본. ID는 진행 체크와 직접 링크에 사용하므로 유지한다."""
-META = dict(title='젤다의 전설 시간의 오카리나', platform='Nintendo Switch 2', version='0.1.1', date='2026-11-18', author='leeoppa84', blog_url='https://blog.naver.com/leeoppaoppa', public_url='https://leeoppa84.github.io/zelda-oot-switch2-guide/', repository='https://github.com/leeoppa84/zelda-oot-switch2-guide')
+META = dict(title='젤다의 전설 시간의 오카리나', platform='Nintendo Switch 2', version='0.2.0', date='2026-11-18', author='leeoppa84', blog_url='https://blog.naver.com/leeoppaoppa', public_url='https://leeoppa84.github.io/zelda-oot-switch2-guide/', repository='https://github.com/leeoppa84/zelda-oot-switch2-guide')
 SOURCES = {
  'official': ('한국닌텐도 · 게임 소개', 'https://www.nintendo.com/kr/games/switch2/aa9ja/index.html', '한국어 공식', '발매 판본·기본 개념'),
  'interview': ('한국닌텐도 · 개발자 인터뷰 3편', 'https://www.nintendo.com/kr/interview/aa9ja/03.html', '한국어 공식', '수동 점프·액션 재구축'),
@@ -166,7 +166,7 @@ chapter('ganon','가논 성과 마지막 전투','청년','여섯 결계를 해�
 EXTRAS = [
  dict(id='basics',title='시작 전에 알아둘 것',text='이 공략은 2026년 Switch 2판의 메인 스토리용입니다. 원작·3DS판·3DS의 마스터 퀘스트와 구별합니다. 던전과 보스 이름, 후반 장비의 스포일러가 포함됩니다. 조작 버튼과 오카리나 음표는 설정과 게임 화면 안내를 우선합니다.',sources=['official','interview']),
  dict(id='jump',title='원작 공략을 볼 때 주의',text='이번 판은 버튼으로 직접 점프합니다. 원작의 자동 점프 설명만 따라가지 마세요. 같은 장소라도 지형과 스위치, 보스의 후반 패턴이 달라질 수 있습니다. 이 문서의 연결도는 진행 순서이며 실제 방 배치 지도가 아닙니다.',sources=['interview','castle']),
- dict(id='collect',title='수집은 메인 진행과 분리',text='빈 병, 하트 조각, 황금 스탈튤라, 마법의 콩, 에포나, 교환 이벤트는 별도로 정리하며 진행하는 편이 편합니다. 이번 판본에는 전체 수집품의 개별 위치 목록을 싣지 않았습니다. 장 완료 체크는 해당 장의 진행 단계에만 적용되며 100% 수집 완료를 뜻하지 않습니다.',sources=['ko-route']),
+ dict(id='collect',title='수집은 메인 진행과 분리',text='빈 병, 하트 조각, 황금 스탈튤라, 마법의 콩, 에포나, 교환 이벤트는 별도로 정리하며 진행하는 편이 편합니다. 지역 수집 탭에서 하트 조각 목록과 핵심 보물상자를 확인할 수 있습니다. 모든 루피·열쇠 상자를 담은 전수 목록은 아닙니다. 장 완료 체크는 해당 장의 진행 단계에만 적용되며 100% 수집 완료를 뜻하지 않습니다.',sources=['ko-route','hearts-gw','ko-hearts']),
  dict(id='fairy',title='딘의 불꽃을 놓쳤다면',text='어둠의 신전 입구에는 딘의 불꽃이 필요합니다. Switch 2 전용 GameWith는 소년 시절 데스마운틴 등산로 정상의 대요정에게 25루피로 해금한다고 안내합니다. nJOY의 진행 표도 같은 보상을 적지만 주변 본문에는 원작의 회전베기 설명이 섞여 있습니다. 한국판 화면 대조 전 정보이므로 대요정의 실제 보상 안내를 확인하고 받으세요.',sources=['fairy','c2','shadow']),
  dict(id='names',title='한국어 명칭 안내',text='본문과 화면 안내는 한국어로 작성했습니다. 공식 소개에서 확인한 작품명과 기본 용어 외의 세부 장비·보스명은 한국어 참고 표기입니다. 한국판 실기 화면과 전부 대조한 공식 명칭집은 아닙니다. 검색은 한국어 별칭과 일본어·영어 이름도 지원합니다.',sources=['official']),
  dict(id='verification',title='적용 범위와 확인 상태',text='2026년 11월 18일 열람한 Switch 2 전용 자료를 요약하고 대조했습니다. 게임의 패치 번호와 한국판 전체 실기 진행은 확인하지 않았습니다. 각 장의 실제 방별 이동과 수집품 전수 회수까지 검증한 완전 공략은 아닙니다. 한국어 2차 자료가 인용한 일본 원문은 독립 출처로 중복 계산하지 않았습니다.',sources=['ko-well'])

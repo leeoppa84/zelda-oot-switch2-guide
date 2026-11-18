@@ -33,63 +33,110 @@
     catch { storage.textContent = '저장할 수 없습니다. 창을 닫으면 체크가 사라질 수 있습니다.'; storage.className = 'storage-error'; }
     updateProgress();
   }));
+  const entries = JSON.parse(document.querySelector('#collection-data').textContent);
+  const entryById = new Map(entries.map(item => [item.id,item]));
+  const entryCards = [...document.querySelectorAll('.reference-entry')];
+  const catalogKey = 'zelda-oot-switch2:collection:v1';
+  const validCatalogIds = new Set(entries.map(item => item.id));
+  let acquired = new Set();
+  try {
+    const saved = JSON.parse(localStorage.getItem(catalogKey) || '[]');
+    if (Array.isArray(saved)) acquired = new Set(saved.filter(id => validCatalogIds.has(id)));
+  } catch { storage.textContent = '수집 기록을 읽지 못했습니다. 이번 화면에서만 체크할 수 있습니다.'; }
+  function collectionProgress() {
+    document.querySelectorAll('.collection-check').forEach(input => {
+      input.checked = acquired.has(input.dataset.collection);
+      input.closest('.catalog-card').classList.toggle('acquired',input.checked);
+    });
+    document.querySelector('#collection-progress').textContent = `수집·이벤트 ${acquired.size}개 체크`;
+  }
+  document.querySelectorAll('.collection-check').forEach(input => input.addEventListener('change',()=>{
+    if (input.checked) acquired.add(input.dataset.collection); else acquired.delete(input.dataset.collection);
+    try { localStorage.setItem(catalogKey,JSON.stringify([...acquired])); }
+    catch { storage.textContent='수집 기록을 저장하지 못했습니다. 창을 닫으면 사라질 수 있습니다.'; }
+    collectionProgress(); filter();
+  }));
   const search = document.querySelector('#search');
   const era = document.querySelector('#era');
+  const region = document.querySelector('#region');
+  const panelIds = ['guide','equipment','quests','collectibles','secrets','sources'];
+  const panel = id => document.querySelector(id==='sources'?'#sources':`#${id}-panel`);
+  let active = 'guide';
   let openBeforeSearch = null;
+  const matchesEra = value => !era.value || value===era.value || value==='두 시대' || (value==='소년→청년' && ['소년','청년','전환','두 시대'].includes(era.value));
   function filter() {
     const q = search.value.normalize('NFKC').toLocaleLowerCase().trim();
     let count = 0;
     if (q && openBeforeSearch === null) openBeforeSearch = new Set(chapters.filter(ch => ch.open).map(ch => ch.id));
-    chapters.forEach((ch, i) => {
-      const item = DATA[i];
-      const match = (!q || JSON.stringify(item).normalize('NFKC').toLocaleLowerCase().includes(q)) && (!era.value || item.era === era.value || item.era === '두 시대');
-      ch.hidden = !match;
-      if (match) { count++; if (q) ch.open = true; }
-      if (!q && openBeforeSearch !== null) ch.open = openBeforeSearch.has(ch.id);
+    chapters.forEach((ch,i)=>{
+      const item=DATA[i];
+      const match=(!q || JSON.stringify(item).normalize('NFKC').toLocaleLowerCase().includes(q)) && matchesEra(item.era);
+      ch.hidden=!match;
+      if (match && q) ch.open=true;
+      if (!q && openBeforeSearch!==null) ch.open=openBeforeSearch.has(ch.id);
+      if (match && active==='guide') count++;
     });
-    if (!q) openBeforeSearch = null;
-    document.querySelector('#result-count').textContent = `${count}개 장 표시`;
-    document.querySelector('#empty').hidden = count !== 0;
-    document.querySelector('#clear-search').hidden = !q && !era.value;
+    if (!q) openBeforeSearch=null;
+    entryCards.forEach(card=>{
+      const item=entryById.get(card.dataset.entry);
+      const match=(!q || JSON.stringify(item).normalize('NFKC').toLocaleLowerCase().includes(q)) && matchesEra(item.era) && (!region.value || region.value===item.region);
+      card.hidden=!match;
+      if(match && q) card.open=true;
+      if(match && card.closest('[role=tabpanel]')===panel(active)) count++;
+    });
+    document.querySelectorAll('.region-block').forEach(block=>{
+      const visible=[...block.querySelectorAll('.reference-entry')].some(card=>!card.hidden);
+      block.hidden=!visible;
+      if(visible && (q || region.value || era.value)) block.open=true;
+    });
+    document.querySelector('#result-count').textContent=active==='guide'?`${count}개 장 표시`:`${count}개 항목 표시`;
+    document.querySelector('#empty').hidden=count!==0 || active!=='guide';
+    document.querySelector('#clear-search').hidden=!q && !era.value;
+    document.querySelectorAll('.catalog-panel').forEach(p=>{
+      const cards=[...p.querySelectorAll('.reference-entry')];
+      const visible=cards.filter(card=>!card.hidden);
+      p.querySelector('.catalog-empty').hidden=visible.length!==0;
+      p.querySelector('.catalog-status').textContent=`전체 ${cards.length}개 · 현재 ${visible.length}개 · 체크 ${cards.filter(card=>acquired.has(card.id)).length}개`;
+    });
   }
-  search.addEventListener('input', filter);
-  era.addEventListener('change', filter);
-  document.querySelector('#clear-search').addEventListener('click', () => { search.value = ''; era.value = ''; filter(); search.focus(); });
-  document.querySelector('#expand').addEventListener('click', () => chapters.filter(ch => !ch.hidden).forEach(ch => { ch.open = true; }));
-  document.querySelector('#collapse').addEventListener('click', () => chapters.forEach(ch => { ch.open = false; }));
-  const guidePanel = document.querySelector('#guide-panel');
-  const sourcePanel = document.querySelector('#sources');
-  function setView(isSources) {
-    guidePanel.hidden = isSources;
-    sourcePanel.hidden = !isSources;
-    document.querySelector('#guide-tools').hidden = isSources;
-    document.querySelector('.layout').classList.toggle('sources-view', isSources);
-    document.querySelector('#tab-guide').setAttribute('aria-selected', String(!isSources));
-    document.querySelector('#tab-sources').setAttribute('aria-selected', String(isSources));
+  search.addEventListener('input',filter);era.addEventListener('change',filter);region.addEventListener('change',filter);
+  document.querySelector('#clear-search').addEventListener('click',()=>{search.value='';era.value='';region.value='';filter();search.focus();});
+  document.querySelector('#expand').addEventListener('click',()=>chapters.filter(ch=>!ch.hidden).forEach(ch=>{ch.open=true;}));
+  document.querySelector('#collapse').addEventListener('click',()=>chapters.forEach(ch=>{ch.open=false;}));
+  function setView(id) {
+    active=id;
+    panelIds.forEach(name=>{
+      panel(name).hidden=name!==id;
+      document.querySelector(`#tab-${name}`).setAttribute('aria-selected',String(name===id));
+    });
+    document.querySelector('#guide-tools').hidden=id==='sources';
+    document.querySelector('.layout').classList.toggle('sources-view',id!=='guide');
+    region.hidden=['guide','sources'].includes(id);
+    filter();
   }
-  document.querySelectorAll('.view-tabs a').forEach(link => link.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+  const tabs=[...document.querySelectorAll('.view-tabs a')];
+  tabs.forEach((link,index)=>link.addEventListener('keydown',event=>{
+    if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
       event.preventDefault();
-      const other = document.querySelector(link.id === 'tab-guide' ? '#tab-sources' : '#tab-guide');
-      other.focus(); other.click();
+      let next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
+      tabs[next].focus();tabs[next].click();
     }
   }));
   function revealHash() {
-    let hash;
-    try { hash = decodeURIComponent(location.hash.slice(1)); } catch { return; }
-    const target = document.getElementById(hash);
-    if (!target) return;
-    if (sourcePanel.contains(target)) {
-      setView(true);
-      const group = target.closest('.source-group');
-      if (group) group.open = true;
-    } else if (hash !== 'top') setView(false);
-    const parent = target.closest('.chapter');
-    if (parent) { search.value = ''; era.value = ''; filter(); parent.open = true; parent.hidden = false; }
-    document.querySelector('#mobile-menu').open = false;
-    requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+    let hash;try{hash=decodeURIComponent(location.hash.slice(1));}catch{return;}
+    const target=document.getElementById(hash);if(!target)return;
+    if(hash!=='top'){
+      const owner=target.closest('[role=tabpanel]');
+      const id=owner?(owner.id==='sources'?'sources':owner.id.replace('-panel','')):'guide';
+      if(target.classList.contains('reference-entry') || target.closest('.chapter')){search.value='';era.value='';region.value='';}
+      setView(id);
+      let details=target.closest('details');
+      while(details){details.open=true;details=details.parentElement.closest('details');}
+    }
+    document.querySelector('#mobile-menu').open=false;
+    requestAnimationFrame(()=>target.scrollIntoView({block:'start'}));
   }
-  addEventListener('hashchange', revealHash);
-  document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', () => { if (link.hash === location.hash) revealHash(); }));
-  setView(false); updateProgress(); filter(); if (location.hash) revealHash();
+  addEventListener('hashchange',revealHash);
+  document.querySelectorAll('a[href^="#"]').forEach(link=>link.addEventListener('click',()=>{if(link.hash===location.hash)revealHash();}));
+  collectionProgress();updateProgress();setView('guide');if(location.hash)revealHash();
 })();

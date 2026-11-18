@@ -11,3 +11,6 @@
 - 버전·수정일·변경 기록·QA를 일치시키고 생성된 `dist/`와 검토용 문서도 함께 커밋함.
 - 커밋 전 `git diff --check`, `git diff --stat`, 스테이징 목록을 확인함. 비밀정보·무관한 파일·다운로드용 HTML을 포함하지 말 것.
 - 저장소는 2026-11-18 사용자 결정으로 공개, GitHub Pages는 Actions(`pages.yml`)로 배포함. 공개 저장소이므로 비밀정보·개인정보를 올리지 말 것. 푸시 성공을 배포 완료로 표현하지 말고 Actions 결과와 공개 화면을 확인할 것.
+
+- 수집 원본은 `src/collection.py`, 수집 화면 생성은 `src/render_catalog.py`, 설명 SVG는 `src/illustrations.py`. 수집 ID와 `zelda-oot-switch2:collection:v1` 키를 보존함.
+- 공식 화면과 자체 도식을 구분하며 지역 지점도를 실제 지도·정확한 좌표라고 부르지 않음. 메인 진행과 수집 체크를 자동 연동하지 않음.
